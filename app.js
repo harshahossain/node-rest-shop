@@ -10,10 +10,10 @@ const app = express();
 mongoose.connect(
   "mongodb+srv://mharshapratham:" +
     process.env.MONGO_ATLAS_PW +
-    "@node-rest-shop.3p5ml8m.mongodb.net/?retryWrites=true&w=majority",
-  {
-    useMongoClient: true,
-  }
+    "@node-rest-shop.3p5ml8m.mongodb.net/?retryWrites=true&w=majority"
+  // {
+  //   useMongoClient: true, //this is dated and crashes the app
+  // }
 );
 
 app.use(morgan("dev"));
