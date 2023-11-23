@@ -39,9 +39,10 @@ const upload = multer({
 //importing mongoose Model
 const Product = require("../models/product");
 
+//GET_ALL
 router.get("/", (req, res, next) => {
   Product.find()
-    .select("name price _id")
+    .select("name price _id productImage")
     .exec()
     .then((doc) => {
       const response = {
@@ -51,6 +52,7 @@ router.get("/", (req, res, next) => {
           return {
             name: data.name,
             price: data.price,
+            productImage: data.productImage,
             _id: data._id,
             url: {
               request: {
@@ -79,6 +81,7 @@ router.post("/", upload.single("productImage"), (req, res, next) => {
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     price: req.body.price,
+    productImage: req.file.path,
   });
   product
     .save()
@@ -105,10 +108,11 @@ router.post("/", upload.single("productImage"), (req, res, next) => {
   //neccessary|method provied by mongoose to store into database
 });
 
+//GET SINGLE PRODUCT
 router.get("/:productId", (req, res, next) => {
   const id = req.params.productId; //this should be whats after ':' so if we choose ":id" this should and would be req.params.id
   Product.findById(id)
-    .select("name price _id")
+    .select("name price _id productImage")
     .exec()
     .then((doc) => {
       console.log("from database", doc);

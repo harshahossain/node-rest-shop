@@ -16,6 +16,8 @@ mongoose.connect(
   // }
 );
 
+app.use("/uploads", express.static("uploads")); //multer//to access it we just need to localhost:3000/fileNameInUploadsFolder.jpeg
+//but I added 'uploads' so now its localhost:3000/uploads/thenWhateverTheFileNameIs.jepg
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
