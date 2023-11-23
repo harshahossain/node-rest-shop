@@ -4,13 +4,20 @@ const Order = require("../models/order");
 const { default: mongoose } = require("mongoose");
 
 router.get("/", (req, res, next) => {
-  res.status(200).json({
-    message: "hitting the GET for orders. So, orders fetched, I guess",
-  });
+  Order.find()
+    .exec()
+    .then((doc) => {
+      console.log(doc);
+      res.status(200).json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
 });
 
 router.post("/", (req, res, next) => {
-  const order = new order({
+  const order = new Order({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     quantity: req.body.quantity,
