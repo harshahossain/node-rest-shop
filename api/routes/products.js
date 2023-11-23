@@ -1,6 +1,40 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router(); //its like a sub-packge express ships with capability of handling different routes
+const multer = require("multer");
+//const upload = multer({ dest: "uploads/" });
+
+//more multer config (neccsarry? eh)
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    const name = Date.now();
+    cb(null, name + file.originalname);
+  },
+});
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    "image/webp" ||
+    "image/jpg" ||
+    "image/png"
+  ) {
+    //accept
+    cb(null, true);
+  } else {
+    //reject a file
+    cb(null, false);
+  }
+};
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 10,
+  },
+  fileFilter: fileFilter,
+});
 
 //importing mongoose Model
 const Product = require("../models/product");
@@ -37,7 +71,9 @@ router.get("/", (req, res, next) => {
 //cause we wanna target anything that starts with /products. so anything beyond slash will already have /products built-in
 //the second arg is a handler which is a fn
 
-router.post("/", (req, res, next) => {
+//POST
+router.post("/", upload.single("productImage"), (req, res, next) => {
+  console.log(req.file);
   const product = new Product({
     //setting up the product with mongoose
     _id: new mongoose.Types.ObjectId(),
