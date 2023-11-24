@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
+const userRoutes = require("./api/routes/users");
 
 //for enabling cross origin resource sharing CORS
 app.use((req, res, next) => {
@@ -50,6 +51,8 @@ app.use((req, res, next) => {
 app.use("/products", productRoutes); //so this prefixes the call with '/products' and this is why in products.js we only gonna use '/'
 
 app.use("/orders", orderRoutes);
+
+app.use("/user", userRoutes);
 
 //catching everything that cant get to upper routes
 //handling error
