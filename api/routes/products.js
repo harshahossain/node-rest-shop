@@ -4,6 +4,8 @@ const router = express.Router(); //its like a sub-packge express ships with capa
 const multer = require("multer");
 //const upload = multer({ dest: "uploads/" });
 
+const checkAuth = require("../middleware/check-auth");
+
 //more multer config (neccsarry? eh)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -74,7 +76,7 @@ router.get("/", (req, res, next) => {
 //the second arg is a handler which is a fn
 
 //POST
-router.post("/", upload.single("productImage"), (req, res, next) => {
+router.post("/", checkAuth, upload.single("productImage"), (req, res, next) => {
   console.log(req.file);
   const product = new Product({
     //setting up the product with mongoose
